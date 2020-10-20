@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Guess The Word</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+<style>
+    body{
+        color: white;
+    }
+    #player1_name, #player2_name{
+        color: black !important ;
+    }
+</style>
+</head>
+<body style="background-color: chartreuse;">
+
+    <h4 id="player1_name"></h4> <span id="player1_score"></span>
+
+    <h4 id="player2_name"></h4> <span id="player2_score"></span>
+<div class="container">
+	<center>
+        <h2 style="color: black !important;">Guess The Word</h2>
+        <h3 id="playerQ"></h3>
+        <h3 id="playerA"></h3>
+        <h5 id="Output" class="col-lg-6"></h5>
+		<br>
+        <br>
+        <h3 id="questionturn"> Question Turn - </h3>
+        <br>
+        <br>
+        <h3 id="answerturn"> Answer Turn - </h3>
+        <br>
+        <br>
+        <h5 id="output"></h5>
+        <br>
+        <br>
+        <label>Type a word: <b style="color: red">(Try putting word which has 5 or more letters)</b></label>
+        <br>
+        <br>
+        <input type="text" id="word" class="form-control" placeholder="Write the word" style="width: 30%;">
+        <br>
+        <button onclick="Send();" class="btn btn-success" style="width: 45%;">Set as Word</button>
+	</center>
+</div>
+
+<script>
+player1 = localStorage.getItem("Player 1"); 
+player2 = localStorage.getItem("Player 2"); 
+
+player1_score = 0;
+player2_score = 0;
+
+word = "";
+
+answer_turn = player2;
+question_turn = player1;
+
+document.getElementById("player1_name").innerHTML = player1 + " : ";
+document.getElementById("player2_name").innerHTML = player2 + " : ";
+
+document.getElementById("player1_score").innerHTML = player1_score;
+document.getElementById("player2_score").innerHTML = player2_score;
+
+document.getElementById("questionturn").innerHTML = "Question Turn - " + player1;
+document.getElementById("answerturn").innerHTML = "Answer Turn - " + player2;
+
+function Send(){
+    get_word = document.getElementById("word").value;
+    word = get_word.toLowerCase();
+    console.log("lowercase word - " + word);
+
+    charAt1 = word.charAt(1);
+    console.log(charAt1);
+
+    length_divide_2 = Math.floor(word.length/2);
+    charAt2 = word.charAt(length_divide_2);
+    console.log(charAt2);
+
+    length_minus_1 = word.length - 1;
+    charAt3 = word.charAt(length_minus_1);
+    console.log(charAt3);
+
+    remove_charAt1 = word.replace(charAt1, "_");
+    remove_charAt2 = remove_charAt1.replace(charAt2, "_");
+    remove_charAt3 = remove_charAt2.replace(charAt3, "_");
+    console.log(remove_charAt3);
+
+    question_word = "<h4 id='word_display'> Guess - " + remove_charAt3 + "</h4>";
+    input_box = "<br> Answer: <input type='text' id='input_checkbox' style='color: black;'>";
+    check_button = "<br> <br> <button class='btn btn-success' onclick='check();'>Check</button>";
+    row = question_word + input_box + check_button;
+    document.getElementById("output").innerHTML = row;
+
+document.getElementById("word").innerHTML = "";
+}
+
+function check(){
+    get_answer = document.getElementById("input_checkbox").value;
+    answer = get_answer.toLowerCase();
+    console.log("Given Answer = " + answer);
+    if(answer == word){
+        if(answer_turn == player1){
+            player1_score = player1_score + 1;
+            document.getElementById("player1_score").innerHTML = player1_score;
+        }
+        else{
+            player2_score = player2_score + 1;
+            document.getElementById("player2_score").innerHTML = player2_score;
+        }
+    }
+    if(question_turn == player1){
+        question_turn = player2;
+        document.getElementById("questionturn").innerHTML = "Question Turn - " + question_turn;
+    }
+    else{
+        question_turn = player1;
+        document.getElementById("questionturn").innerHTML = "Question Turn - " + question_turn;
+    }
+    if(answer_turn == player1){
+        answer_turn = player2;
+        document.getElementById("answerturn").innerHTML = "Answer Turn - " + answer_turn;
+    }
+    else{
+        answer_turn = player1;
+        document.getElementById("answerturn").innerHTML = "Answer Turn - " + answer_turn;
+    }
+    document.getElementById("word").innerHTML = "";
+}
+</script>
+</body>
+</html>
